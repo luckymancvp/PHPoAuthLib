@@ -88,10 +88,9 @@ class CurlClient extends AbstractClient
         curl_setopt($ch, CURLOPT_URL, $endpoint->getAbsoluteUri());
 
         if ($method === 'POST' || $method === 'PUT') {
-            if ($requestBody && is_array($requestBody)) {
-                if ($extraHeaders['Content-type'] != 'Content-type: multipart/form-data') {
-                    $requestBody = http_build_query($requestBody, '', '&');
-                }
+            $isMultipart = $extraHeaders['Content-type'] === 'Content-type: multipart/form-data';
+            if ($requestBody && is_array($requestBody) && !$isMultipart) {
+                $requestBody = http_build_query($requestBody, '', '&');
             }
 
             if ($method === 'PUT') {

@@ -213,9 +213,7 @@ abstract class AbstractService extends BaseAbstractService implements ServiceInt
         }
 
         $authParameters = array_merge($authParameters, array('oauth_token' => $token->getAccessToken()));
-
-        $isMultipart = isset($headers['Content-type'])
-                       && $headers['Content-type'] === 'multipart/form-data';
+        $isMultipart = (isset($headers['Content-type']) && $headers['Content-type'] == 'multipart/form-data');
         $signatureParams = (is_array($bodyParams) && !$isMultipart)
             ? array_merge($authParameters, $bodyParams)
             : $authParameters;
